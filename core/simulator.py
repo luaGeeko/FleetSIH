@@ -32,15 +32,22 @@ class FleetSimulator:
         self.shipments.clear()
         self.state = EnvironmentState()
 
+        # Spawn 5 vehicles
         coords = [(10.0, 10.0), (80.0, 20.0), (40.0, 50.0), (20.0, 80.0), (90.0, 90.0)]
         for i, pos in enumerate(coords):
             vid = f"V{i+1:02d}"
             self.vehicles[vid] = Vehicle(id=vid, position=pos)
 
+        # Spawn 8 shipments (Increased from 3 for a busier live map)
         self.shipments = {
             "S101": Shipment(id="S101", pickup=(15.0, 15.0), destination=(90.0, 90.0)),
             "S102": Shipment(id="S102", pickup=(85.0, 25.0), destination=(10.0, 85.0)),
-            "S103": Shipment(id="S103", pickup=(45.0, 55.0), destination=(5.0, 5.0))
+            "S103": Shipment(id="S103", pickup=(45.0, 55.0), destination=(5.0, 5.0)),
+            "S104": Shipment(id="S104", pickup=(20.0, 80.0), destination=(80.0, 20.0)),
+            "S105": Shipment(id="S105", pickup=(50.0, 10.0), destination=(50.0, 90.0)),
+            "S106": Shipment(id="S106", pickup=(10.0, 50.0), destination=(90.0, 50.0)),
+            "S107": Shipment(id="S107", pickup=(75.0, 75.0), destination=(25.0, 25.0)),
+            "S108": Shipment(id="S108", pickup=(95.0, 5.0),  destination=(5.0, 95.0))
         }
 
     def step(self):
