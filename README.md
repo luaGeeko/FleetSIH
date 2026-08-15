@@ -33,8 +33,8 @@ The system is benchmarked against both a **Greedy Dispatch heuristic** and an **
 ## 🚀 Installation & Quick Start
 
 **1. Clone the repository:**
-```bash
 git clone [https://github.com/luaGeeko/FleetSIH.git](https://github.com/luaGeeko/FleetSIH.git)
+``` bash
 cd FleetSIH
 ```
 **2. Install dependencies:**
