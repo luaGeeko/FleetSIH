@@ -19,9 +19,9 @@ class Shipment:
     created_tick: int = 0
     deadline: int = 150
     # Telemetry
-    assigned_tick: int = -1
-    pickup_tick: int = -1
-    delivery_tick: int = -1
+    assigned_tick: Optional[int] = None  # Changed from -1 to None for safe logic checks
+    pickup_tick: Optional[int] = None    # Changed from -1 to None
+    delivery_tick: Optional[int] = None  # Changed from -1 to None
 
 @dataclass
 class RouteStop:

@@ -101,6 +101,17 @@ python evaluation/benchmark.py
 python evaluation/plot_results.py
 ```
 
+### AI Coordinator Performance: AI Coordinator (V0) vs. Advanced Constraints in AI Coordinator (V1)
+
+| Metric               |   V0 (Baseline) |   V1 (Advanced) | Change (%)   | Result              |
+|:---------------------|----------------:|----------------:|:-------------|:--------------------|
+| Completion (%)       |           94.88 |           95.22 | +0.4%        | ✅ Improved         |
+| On-Time (%)          |           92.88 |           90.96 | -2.1%        | ⚠️ Trade-off       |
+| Distance (km)        |         2017.31 |         1967.55 | -2.5%        | ✅ Improved         |
+| Utilization (%)      |           84.75 |           84.88 | +0.2%        | ✅ Improved         |
+| Avg Recovery (Ticks) |            4.7  |            3.77 | -19.9%       | ✅ Fixed & Improved |
+| Adaptation Cost (%)  |           21.19 |           23.81 | +12.3%       | ⚠️ Trade-off       |
+
 ## What We Deliver
 * **Real-Time Fleet Operations Center:** Monitor vehicles, shipments, capacity, traffic, and real-time disruptions through an interactive Streamlit dashboard.
 * **Intelligent Vehicle–Shipment Assignment:** Compare traditional Greedy Dispatch heuristics and global OR-Tools CVRP optimization against our learned PPO-based RL Fleet Coordinator.

@@ -1,5 +1,7 @@
 # Byte-compiled / optimized / DLL support
 __pycache__/
 ppo_fleet_tensorboard/
+ppo_fleet_v1_tensorboard/
 .DS_Store
 **/.DS_Store
+evaluation/results/

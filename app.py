@@ -4,6 +4,7 @@ import time
 import pydeck as pdk
 from PIL import Image
 from core.simulator import FleetSimulator
+from optimization.ai_policy import AIPolicyOptimizer
 
 # --- Configuration & State Initialization ---
 st.set_page_config(page_title="Smart Fleet Platform", page_icon="🚚", layout="wide")
@@ -12,10 +13,19 @@ st.set_page_config(page_title="Smart Fleet Platform", page_icon="🚚", layout="
 if "experiment_history" not in st.session_state:
     st.session_state.experiment_history = []
 
-# Initialize the Backend Simulator in Session State
+# Initialize the Backend Simulator and AI Optimizer in Session State
 if "sim" not in st.session_state:
     st.session_state.sim = FleetSimulator()
+    
+    # Explicitly load the strictly required V1 model path and inject it
+    try:
+        ai_opt = AIPolicyOptimizer(model_path="models/fleet_ppo_v1_advanced_500k.zip")
+        st.session_state.sim.set_ai_optimizer(ai_opt)
+    except Exception as e:
+        st.error(f"Failed to load AI Model: {e}")
+        
     st.session_state.sim.generate_deterministic_scenario()
+
 if "simulation_running" not in st.session_state:
     st.session_state.simulation_running = False
 
@@ -45,7 +55,7 @@ tab_live, tab_eval = st.tabs(["🔴 Live Simulation (Spatial Demo)", "📊 Evalu
 # ==========================================
 with tab_live:
     st.markdown("""
-    **Real-Time Decentralized Coordination:** Watch the AI policy react dynamically. Because the agents utilize spatial observation sharing 
+    Watch the AI policy react dynamically. Because the agents utilize spatial observation sharing 
     (accessing positions and zone statuses), the system can instantly triage localized demand surges and breakdowns without recalculating a rigid global matrix.
     """)
     
@@ -362,26 +372,21 @@ with tab_eval:
     
     st.markdown("""
     ### 🔬 Scientific Validation & Results
-    While classical combinatorial solvers (OR-Tools) achieve mathematical perfection in static scenarios, they are inherently brittle under dynamic stress. Our multi-seed controlled offline experiments isolate and prove that the decentralized AI policy delivers superior resilience.
+    This dashboard presents the results of our multi-seed controlled offline experiments. We compare the AI Coordinator against traditional Greedy Dispatch and global OR-Tools optimization to evaluate performance across varied operational conditions.
     
-    *   **The Adaptation Cost (Distance Penalty):** During demand surges and chaotic disruptions, OR-Tools incurs up to an **80% distance penalty** as it is forced to tear up and recalculate the global routing matrix. The AI Coordinator absorbs these shocks organically, limiting the adaptation penalty to **~50%** through adaptive, localized capacity reallocation.
-    *   **Reliability Under Stress:** The AI policy successfully learns to balance the reward function, sacrificing absolute distance efficiency to achieve higher **On-Time Delivery rates** during concurrent systemic disruptions ("Chaos Day").
-    *   **Compute Latency (O(1) vs NP-Hard):** OR-Tools solves a CVRP matrix requiring exponential scaling time, freezing live operations to re-route during disruptions. The AI executes policy decisions in a single neural network forward-pass, recovering in milliseconds.
+    *   **The Adaptation Cost:** During demand surges and chaotic disruptions, we measure the extra distance incurred to handle the dynamic constraints.
+    *   **Reliability Under Stress:** We evaluate how well each strategy balances static routing efficiency against strict service-level constraints (like on-time delivery rates) during concurrent systemic disruptions.
+    *   **Agility & Recovery:** By tracking the average ticks to recover, we benchmark how quickly the system reassigns resources following a vehicle breakdown or sudden demand surge.
     """)
     
     st.divider()
     
     # Render the statically generated dashboard
     try:
-        # Note: adjust the extension (.jpg or .png) based on what the plotting script ultimately saved
-        image = Image.open("evaluation/results/performance_dashboard.png") 
-        st.image(image, caption="Multi-Seed Controlled Evaluation (10-Vehicle Fleet, 500k Timesteps)", use_container_width=True)
+        dash_image = Image.open("evaluation/results/performance_dashboard_v1.png") 
+        st.image(dash_image, caption="Multi-Seed Controlled Evaluation (10-Vehicle Fleet, 500k Timesteps)", use_container_width=True)
     except FileNotFoundError:
-        try:
-            image = Image.open("evaluation/results/performance_dashboard.jpg")
-            st.image(image, caption="Multi-Seed Controlled Evaluation (10-Vehicle Fleet, 500k Timesteps)", use_container_width=True)
-        except FileNotFoundError:
-            st.warning("⚠️ Could not find the performance dashboard image. Please run the offline benchmark plotting script first.")
+        st.warning("⚠️ Could not find the V1 performance dashboard image. Please run the offline benchmark plotting script (`python -m evaluation.plot_results --version v1`) first.")
 
 # --- Auto-Advance Simulation Loop (Outside tabs so it runs globally) ---
 if st.session_state.simulation_running:
