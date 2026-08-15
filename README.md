@@ -86,7 +86,10 @@ Static Efficiency — total distance travelled.
 Resilience — recovery rate after disruption.
 Agility — number of simulation ticks required to recover.
 Adaptation Cost — additional distance incurred under disruption relative to the corresponding normal operating condition.
-$$ \text{Adaptation Cost} = \left( \frac{D_{\text{disrupted}} - D_{\text{normal}}}{D_{\text{normal}}} \right) \times 100 $$
+
+$$
+\text{Adaptation Cost} = \left( \frac{D_{\text{disrupted}} - D_{\text{normal}}}{D_{\text{normal}}} \right) \times 100
+$$
 
 The experiments are designed to examine a key trade-off: static routing efficiency versus adaptability under changing operating conditions.
 
