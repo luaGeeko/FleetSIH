@@ -98,10 +98,10 @@ Fast online decision-making: The RL coordinator is not intended to replace exact
 To reproduce these results, run the offline evaluation suite
 ```bash
 # Run the multi-seed benchmark matrix
-python evaluation/benchmark.py
+python -m evaluation.benchmark --version v1 --model_path models/fleet_ppo_v1_advanced_500k.zip
 
 # Generate the performance dashboard plots
-python evaluation/plot_results.py
+python -m evaluation.plot_results --version v1
 ```
 
 ### AI Coordinator Performance: AI Coordinator (V0) vs. Advanced Constraints in AI Coordinator (V1)
