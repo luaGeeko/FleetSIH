@@ -1,0 +1,11 @@
+gymnasium
+matplotlib
+numpy
+ortools
+pandas
+pydeck
+seaborn
+streamlit
+rich
+tqdm
+stable-baselines3[extra]
